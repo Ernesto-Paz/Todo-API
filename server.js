@@ -1,24 +1,16 @@
-express = require("express");
-app = express();
+var express = require("express");
+var _ = require("underscore");
+var bodyParser = require("body-parser");
+var app = express();
 
 var publicPort = process.env.PORT || 3000 ;
 
-var todos = [{
-id: 1,
-description: " The first thing I need to do.",
-completed: false
-},
-{
-id: 2,
-description: " The second thing I need to do.",
-completed: false
-},
-{
-id: 3,
-description: "The third thing I need to do.",
-completed: true
-}
+var todoID = 1;
+
+var todos = [
 ];
+
+app.use(bodyParser.json());
 
 app.get("/",function(req,res){
 
@@ -45,6 +37,16 @@ var reqid = parseInt(req.params.id,10);
 
     res.status(404).send();
     
+});
+
+app.post("/todos",function(req,res){
+    
+var body = req.body;
+body.id = todoID
+todoID++
+todos.push(body);
+res.json(body);
+
 });
 
 app.listen(publicPort, function(){
