@@ -8,6 +8,7 @@ var publicPort = process.env.PORT || 3000 ;
 var todoID = 1;
 
 var todos = [
+    
 ];
 
 app.use(bodyParser.json());
@@ -27,26 +28,30 @@ app.get("/todos",function(req,res){
 app.get("/todos/:id",function(req,res){
     
 var reqid = parseInt(req.params.id,10);
+var matchingid = _.findWhere(todos,{id: reqid})
 
- for(i=0;i<todos.length;i++){
-    if(reqid === todos[i].id)
-    {
-        res.send( todos[i] );
-    }
- }
-
-    res.status(404).send();
-    
+if(typeof matchingid !== "undefined")
+{
+ res.json (matchingid);
+}
+else{
+ res.status(404).send();
+}
 });
 
 app.post("/todos",function(req,res){
-    
-var body = req.body;
+var body = req.body;  
+if(!_.isBoolean(body.completed) || !_.isString(body.description) || body.description.trim().length === 0 )
+{
+    res.status(400);
+    res.send("Invalid data provided.");
+}
+else{   
 body.id = todoID
 todoID++
 todos.push(body);
 res.json(body);
-
+}
 });
 
 app.listen(publicPort, function(){
