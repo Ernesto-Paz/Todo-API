@@ -25,6 +25,9 @@ app.get("/todos",function(req,res){
     
 });
 
+
+
+//app GET
 app.get("/todos/:id",function(req,res){
     
 var reqid = parseInt(req.params.id,10);
@@ -39,6 +42,9 @@ else{
 }
 });
 
+
+
+//app POST
 app.post("/todos",function(req,res){
 var body = _.pick(req.body,"description","completed");  
 if(!_.isBoolean(body.completed) || !_.isString(body.description) || body.description.trim().length === 0 )
@@ -55,6 +61,8 @@ res.json(body);
 }
 });
 
+
+//app DELETE
 app.delete("/todos/:id",function(req,res){
 var reqid = parseInt(req.params.id,10);
 var matchingid = _.findWhere(todos,{id: reqid});
@@ -63,9 +71,40 @@ res.status(404);
 res.send("Unable to delete, 404 not found.");
 return
 }
+   
 todos = _.without(todos,matchingid);
 res.json(matchingid);
 });
+
+
+
+//app PUT
+app.put("/todos/:id",function(req,res){
+
+var body = req.body;
+var reqid = parseInt(req.params.id,10);
+var matchingid = _.findWhere(todos,{id: reqid});
+var validatedobj = {};
+
+if(body.hasOwnProperty("completed") && _.isBoolean(body.completed)){
+validatedobj.completed = body.completed;
+}
+else if(body.hasOwnProperty(completed)){
+   return res.status(400).send("Recieved bad data in completed field.");
+}
+if(body.hasOwnProperty("description") && _.isString(body.description) && body.description.trim().length > 0){
+    validatedobj.description = body.description ;
+}
+else if(body.hasOwnProperty(description)){
+ return res.status(400).send("Recieved bad data in description field.");   
+}
+_.extend(matchingid, validatedobj);
+res.json(matchingid);
+    
+});
+
+
+
 app.listen(publicPort, function(){
 
 console.log("Listening on " + publicPort );
