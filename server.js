@@ -40,7 +40,7 @@ else{
 });
 
 app.post("/todos",function(req,res){
-var body = req.body;  
+var body = _.pick(req.body,"description","completed");  
 if(!_.isBoolean(body.completed) || !_.isString(body.description) || body.description.trim().length === 0 )
 {
     res.status(400);
@@ -49,11 +49,23 @@ if(!_.isBoolean(body.completed) || !_.isString(body.description) || body.descrip
 else{   
 body.id = todoID
 todoID++
+body.description = body.description.trim();
 todos.push(body);
 res.json(body);
 }
 });
 
+app.delete("/todos/:id",function(req,res){
+var reqid = parseInt(req.params.id,10);
+var matchingid = _.findWhere(todos,{id: reqid});
+if(typeof matchingid === "undefined"){
+res.status(404);
+res.send("Unable to delete, 404 not found.");
+return
+}
+todos = _.without(todos,matchingid);
+res.json(matchingid);
+});
 app.listen(publicPort, function(){
 
 console.log("Listening on " + publicPort );
