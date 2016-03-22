@@ -19,37 +19,40 @@ app.get("/",function(req,res){
     
 });
 
-
-
-
 app.get("/todos",function(req,res){
     var filteredTodos = todos
-    var queryParams = _.pick(req.query,"completed","description")
-    console.log(req.query);
-    
+    var queryParams = _.pick(req.query,"completed","q")
     if(queryParams.hasOwnProperty("completed") && queryParams.completed === "true"){
         queryParams.completed = true;
-        console.log(queryParams);
+        filteredTodos = _.where(filteredTodos,{completed: queryParams.completed});
     }
     else if(queryParams.hasOwnProperty("completed") && queryParams.completed === "false") {
         queryParams.completed = false; 
+        filteredTodos = _.where(filteredTodos,{completed : queryParams.completed});
     }
     else if(queryParams.hasOwnProperty("completed")){
         res.status(400).send("Error bad data.");
         return
     }
-    
-    if(queryParams.hasOwnProperty("description") && !_.isString(queryParams.description)){
+
+    if(queryParams.hasOwnProperty("q") && !_.isString(queryParams.q)){
     res.status(400).send("Error bad data.");
     return
     
     }
-    if(queryParams.hasOwnProperty("completed") || queryParams.hasOwnProperty("description")){
-       console.log(filteredTodos);
-        filteredTodos = _.where(todos,queryParams);
-        console.log(filteredTodos);
- }
-    res.json(filteredTodos);
+    
+    else if(queryParams.hasOwnProperty("q")){
+        filteredTodos = _.filter(filteredTodos,function(str){
+        return str.description.toLowerCase().indexOf(queryParams.q.toLowerCase()) != -1
+        });
+        if(filteredTodos.length == 0)
+        {
+            res.status(404);
+            res.send("No results found.");
+        }
+    }
+    
+res.json(filteredTodos);
 });
 
 
