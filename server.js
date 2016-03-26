@@ -19,6 +19,37 @@ app.get("/", function (req, res) {
 });
 
 app.get("/todos", function (req, res) {
+    var todosArray = []
+    var queryParams = _.pick(req.query, "completed", "q")
+    var where = {where:{}}
+    if (queryParams.hasOwnProperty("completed")) {
+        if (queryParams.completed === "true") {
+            queryParams.completed = true
+        } else {
+            queryParams.completed = false;
+        }
+        where.where.completed = queryParams.completed
+    }
+    if (queryParams.hasOwnProperty("q") && _.isString(queryParams.q)) {
+        where.where.description = {};
+        where.where.description.$like = "%" + queryParams.q + "%"
+    }
+    db.todo.findAll(where).then(function (todos) {
+        todos.forEach(function (todo) {
+            var jsonObj = JSON.stringify(todo);
+            todosArray.push(jsonObj);
+        })
+    }).then(function () {
+        console.log(where);
+        if(todosArray.length == 0 ){
+            res.status = 404
+            res.send("No entries found for given query.");
+        }
+        res.send(todosArray);
+    })
+
+
+    /*
     var filteredTodos = todos
     var queryParams = _.pick(req.query, "completed", "q")
     if (queryParams.hasOwnProperty("completed") && queryParams.completed === "true") {
@@ -51,6 +82,7 @@ app.get("/todos", function (req, res) {
     }
 
     res.json(filteredTodos);
+    */
 });
 
 
@@ -58,16 +90,24 @@ app.get("/todos", function (req, res) {
 //app GET
 app.get("/todos/:id", function (req, res) {
 
-    var reqid = parseInt(req.params.id, 10);
-    var matchingid = _.findWhere(todos, {
-        id: reqid
-    })
+    var reqId = parseInt(req.params.id, 10);
+    db.todo.findById(reqId).then(function (todo) {
+            if (!!todo) {
+                res.json(todo);
+            } else {
+                res.status(404);
+                res.send("No todo with that Id found.");
+            }
+        })
+        /*var matchingid = _.findWhere(todos, {
+            id: reqid
+        })
 
-    if (typeof matchingid !== "undefined") {
-        res.json(matchingid);
-    } else {
-        res.status(404).send();
-    }
+        if (typeof matchingid !== "undefined") {
+            res.json(matchingid);
+        } else {
+            res.status(404).send();
+        }*/
 });
 
 
@@ -78,13 +118,14 @@ app.post("/todos", function (req, res) {
     db.todo.create({
         description: body.description,
         completed: body.completed
-    }).then(function(todo){
-    res.json(todo);
-    }).catch(e){
-    res.status(400).json(e);
-    };
+    }).then(function (todo) {
+        res.json(todo);
+    }).catch(function () {
 
+            res.status(400).json(e);
+        }
 
+    );
     /*if (!_.isBoolean(body.completed) || !_.isString(body.description) || body.description.trim().length === 0) {
         res.status(400);
         res.send("Invalid data provided.");
@@ -120,7 +161,27 @@ app.delete("/todos/:id", function (req, res) {
 app.put("/todos/:id", function (req, res) {
 
     var body = req.body;
-    var reqid = parseInt(req.params.id, 10);
+    var reqId = parseInt(req.params.id, 10);
+    db.todo.findById(reqId).then(function (foundtodo) {
+            if (!!foundtodo) {
+                if (body.hasOwnProperty("description") && _.isString(body.description) && body.description.trim().length > 0) {
+                    foundtodo.description = body.description;
+                }
+                if (body.hasOwnProperty("completed") && _.isBoolean(body.completed)) {
+
+                    foundtodo.completed = body.completed;
+                }
+                foundtodo.save().then(function (savedtodo) {
+                    res.json(savedtodo);
+                })
+            } else {
+                res.status(404);
+                res.send("No record found to modify.");
+            }
+        }).catch(function (err) {
+            console.log(err)
+        })
+        /*
     var matchingid = _.findWhere(todos, {
         id: reqid
     });
@@ -138,7 +199,7 @@ app.put("/todos/:id", function (req, res) {
     }
     _.extend(matchingid, validatedobj);
     res.json(matchingid);
-
+*/
 });
 
 db.sequelize.sync().then(function () {
