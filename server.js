@@ -36,8 +36,7 @@ app.get("/todos", function (req, res) {
     }
     db.todo.findAll(where).then(function (todos) {
         todos.forEach(function (todo) {
-            var jsonObj = JSON.stringify(todo);
-            todosArray.push(jsonObj);
+            todosArray.push(todo);
         })
     }).then(function () {
         console.log(where);
