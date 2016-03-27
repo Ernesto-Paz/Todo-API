@@ -142,6 +142,22 @@ app.post("/todos", function (req, res) {
 //app DELETE
 app.delete("/todos/:id", function (req, res) {
     var reqid = parseInt(req.params.id, 10);
+    db.todo.findById(reqid).then(function(foundtodo){
+        console.log(foundtodo);
+    if(!foundtodo){
+    res.status(404);
+    res.send("Could not find record to delete.");
+    return
+    }
+    else{
+    foundtodo.destroy().then(function(todo){
+        res.json(todo);      
+        });
+    }
+})
+    
+    
+    /*
     var matchingid = _.findWhere(todos, {
         id: reqid
     });
@@ -153,6 +169,7 @@ app.delete("/todos/:id", function (req, res) {
 
     todos = _.without(todos, matchingid);
     res.json(matchingid);
+    */
 });
 
 
