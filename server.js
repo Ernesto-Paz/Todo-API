@@ -118,10 +118,10 @@ app.post("/todos", function (req, res) {
         description: body.description,
         completed: body.completed
     }).then(function (todo) {
-        res.json(todo);
+        res.send(todo);
     }).catch(function () {
 
-            res.status(400).json(e);
+            res.status(400).send(e);
         }
 
     );
@@ -150,7 +150,7 @@ app.delete("/todos/:id", function (req, res) {
     }
     else{
     foundtodo.destroy().then(function(todo){
-        res.json(todo);      
+        res.send(todo);      
         });
     }
 })
