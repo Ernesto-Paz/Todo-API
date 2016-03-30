@@ -38,6 +38,7 @@ app.get("/todos", function (req, res) {
     }
     db.todo.findAll(where).then(function (todos) {
         todos.forEach(function (todo) {
+            console.log(todo)
             todosArray.push(todo);
         })
     }).then(function () {
@@ -45,6 +46,7 @@ app.get("/todos", function (req, res) {
         if (todosArray.length == 0) {
             res.status(404);
             res.send("No entries found for given query.");
+            return
         }
         res.send(todosArray);
     })
@@ -91,7 +93,7 @@ app.post("/users", function (req, res) {
         email: body.email,
         password:body.password
     }).then(function (userinfo) {
-        res.send(userinfo);
+        res.send(userinfo.pickUserData());
     }).catch(function (e) {
 
             res.status(400);
@@ -149,7 +151,7 @@ app.put("/todos/:id", function (req, res) {
     })
 });
 
-db.sequelize.sync().then(function () {
+db.sequelize.sync({force:true}).then(function () {
     app.listen(publicPort, function () {
 
         console.log("Listening on " + publicPort);
