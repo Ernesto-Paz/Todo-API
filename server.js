@@ -4,6 +4,7 @@ var bodyParser = require("body-parser");
 var app = express();
 var db = require("./db.js");
 var publicPort = process.env.PORT || 3000;
+var bcrypt = require("bcrypt");
 
 var todoID = 1;
 
@@ -81,27 +82,64 @@ app.post("/todos", function (req, res) {
     }).catch(function (e) {
 
             res.status(400);
-                res.send(e);
-        }
-
-    );
-});
-app.post("/users", function (req, res) {
-    var body = _.pick(req.body, "username", "email", "password");
-    db.users.create({
-        username: body.username,
-        email: body.email,
-        password:body.password
-    }).then(function (userinfo) {
-        res.send(userinfo.pickUserData());
-    }).catch(function (e) {
-
-            res.status(400);
             res.send(e);
         }
 
     );
+});
 
+// app POST users
+app.post("/users", function (req, res) {
+    var body = _.pick(req.body, "username", "email", "password");
+
+    if (_.isString(body.username) && _.isString(body.password) && _.isString(body.email)) {
+        db.users.create({
+            username: body.username,
+            email: body.email,
+            password: body.password
+        }).then(function (userinfo) {
+            res.send(userinfo.pickUserData());
+        }).catch(function (e) {
+
+                res.status(400);
+                res.send(e);
+            }
+
+        );
+    } else {
+        res.status(400);
+        res.send("Invalid data recieved.");
+    }
+});
+
+app.post("/users/login", function (req, res) {
+    var body = _.pick(req.body, "username", "password");
+    /*
+    if (_.isString(body.username) && _.isString(body.password)) {
+        res.send(body);
+    } else {
+        res.status(400);
+        res.send("Unable to process request.");
+        return
+    }
+*/
+    db.users.findOne({
+        where: {
+            username: body.username
+        }
+    }).then(function (useraccount) {
+        if (useraccount && bcrypt.compareSync(body.password, useraccount.get("pwhash"))) {
+            res.status(200)
+            res.send(useraccount.pickUserData());
+        } else {
+            res.status(404);
+            res.send("Account not found.");
+        }
+
+    }, function (e) {
+        res.status(500)
+        res.send("Error processing request." + e);
+    })
 });
 
 
@@ -151,7 +189,7 @@ app.put("/todos/:id", function (req, res) {
     })
 });
 
-db.sequelize.sync({force:true}).then(function () {
+db.sequelize.sync({}).then(function () {
     app.listen(publicPort, function () {
 
         console.log("Listening on " + publicPort);
