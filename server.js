@@ -123,22 +123,18 @@ app.post("/users/login", function (req, res) {
         return
     }
 */
-    db.users.findOne({
-        where: {
-            username: body.username
-        }
-    }).then(function (useraccount) {
-        if (useraccount && bcrypt.compareSync(body.password, useraccount.get("pwhash"))) {
-            res.status(200)
-            res.send(useraccount.pickUserData());
-        } else {
-            res.status(404);
-            res.send("Account not found.");
-        }
-
-    }, function (e) {
-        res.status(500)
-        res.send("Error processing request." + e);
+    db.users.authenticateUser(body).then(function(userdata){
+    res.status(200);
+    res.send(userdata);
+    },function(e){
+    if(e){
+    res.send(e);
+    }
+    else{
+    res.status(404).send("Username or Password incorrect.");
+    }
+      
+    
     })
 });
 

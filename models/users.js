@@ -1,7 +1,7 @@
 var _ = require("underscore");
 var bcrypt = require("bcrypt");
 module.exports = function (sequelize, DataTypes) {
-    return sequelize.define("users", {
+    var users = sequelize.define("users", {
 
         email: {
             type: DataTypes.STRING,
@@ -59,6 +59,40 @@ module.exports = function (sequelize, DataTypes) {
 
 
         },
+
+        classMethods: {
+            authenticateUser: function (body) {
+                return new Promise(function (resolve, reject) {
+                        users.findOne({
+                        where: {
+                            username: body.username.toLowerCase()
+                        }
+                    }).then(function(useraccount) {
+                        console.log(useraccount);
+                        if (!useraccount) {
+                            console.log("Account not found. " + body.username)
+                            return reject();
+
+                        }
+                        if (bcrypt.compareSync(body.password, useraccount.get("pwhash"))) {
+
+                            return resolve(useraccount.pickUserData());
+                        } else {
+                            console.log("Incorrect log in for " + body.username + " " + new Date().toString());
+                            return reject();
+                        }
+
+                    }, function (e) {
+                        return reject(e)
+                    })
+
+
+                })
+
+            }
+
+        },
+
         instanceMethods: {
             pickUserData: function () {
 
@@ -73,4 +107,5 @@ module.exports = function (sequelize, DataTypes) {
 
 
     })
+    return users
 };
