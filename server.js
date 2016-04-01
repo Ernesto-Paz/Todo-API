@@ -124,8 +124,8 @@ app.post("/users/login", function (req, res) {
     }
 */
     db.users.authenticateUser(body).then(function(userdata){
-    res.status(200);
-    res.send(userdata);
+    res.header("Authentication", userdata.generateToken("Authentication"))
+    res.json(userdata.pickUserData());
     },function(e){
     if(e){
     res.send(e);
@@ -133,8 +133,6 @@ app.post("/users/login", function (req, res) {
     else{
     res.status(401).send("Username or Password incorrect.");
     }
-      
-    
     })
 });
 
