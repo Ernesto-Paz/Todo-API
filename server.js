@@ -5,7 +5,7 @@ var app = express();
 var db = require("./db.js");
 var publicPort = process.env.PORT || 3000;
 var bcrypt = require("bcrypt");
-
+var middleware = require("./middleware.js");
 var todoID = 1;
 
 var todos = [
@@ -19,7 +19,7 @@ app.get("/", function (req, res) {
 
 });
 
-app.get("/todos", function (req, res) {
+app.get("/todos", middleware.requireAuth, function (req, res) {
     var todosArray = []
     var queryParams = _.pick(req.query, "completed", "q")
     var where = {
@@ -56,7 +56,7 @@ app.get("/todos", function (req, res) {
 
 
 //app GET
-app.get("/todos/:id", function (req, res) {
+app.get("/todos/:id", middleware.requireAuth, function (req, res) {
 
     var reqId = parseInt(req.params.id, 10);
     db.todo.findById(reqId).then(function (todo) {
@@ -72,7 +72,7 @@ app.get("/todos/:id", function (req, res) {
 
 
 //app POST todos
-app.post("/todos", function (req, res) {
+app.post("/todos", middleware.requireAuth, function (req, res) {
     var body = _.pick(req.body, "description", "completed");
     db.todo.create({
         description: body.description,
@@ -138,7 +138,7 @@ app.post("/users/login", function (req, res) {
 
 
 //app DELETE
-app.delete("/todos/:id", function (req, res) {
+app.delete("/todos/:id", middleware.requireAuth, function (req, res) {
     var reqid = parseInt(req.params.id, 10);
     db.todo.findById(reqid).then(function (foundtodo) {
         console.log(foundtodo);
@@ -158,7 +158,7 @@ app.delete("/todos/:id", function (req, res) {
 
 
 //app PUT
-app.put("/todos/:id", function (req, res) {
+app.put("/todos/:id", middleware.requireAuth, function (req, res) {
 
     var body = req.body;
     var reqId = parseInt(req.params.id, 10);
