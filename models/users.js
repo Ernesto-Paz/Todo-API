@@ -3,7 +3,7 @@ var bcrypt = require("bcrypt");
 var cryptojs = require("crypto-js");
 var jsonwebtoken = require("jsonwebtoken");
 module.exports = function (sequelize, DataTypes) {
-        var users = sequelize.define("users", {
+    var users = sequelize.define("users", {
 
                 email: {
                     type: DataTypes.STRING,
@@ -36,113 +36,116 @@ module.exports = function (sequelize, DataTypes) {
                     validate: {
                         len: [7, 100]
                     },
-                    set: function (pword) {
-                        //use async functions for production
-                        var salt = bcrypt.genSaltSync(10);
-                        var pwhash = bcrypt.hashSync(pword, salt);
-
-                        this.setDataValue("password", pword);
-                        this.setDataValue("pwhash", pwhash);
-                        this.setDataValue("salt", salt);
-                    }
+                set: function (pword) {
+                    //use async functions for production
+                    var salt = bcrypt.genSaltSync(10);
+                    var pwhash = bcrypt.hashSync(pword, salt);
+                    this.setDataValue("password", pword);
+                    this.setDataValue("pwhash", pwhash);
+                    this.setDataValue("salt", salt);
                 }
-            }, {
-                hooks: {
-                    beforeValidate: function (user, options) {
-                        if (typeof user.email !== "undefined" && _.isString(user.email)) {
-                            user.email = user.email.toLowerCase();
-                        }
-                        if (typeof user.username !== "undefined" && _.isString(user.username)) {
-                            user.username = user.username.toLowerCase();
-
-                        }
+            }
+    },
+        {
+            hooks: {
+                beforeValidate: function (user, options) {
+                    if (typeof user.email !== "undefined" && _.isString(user.email)) {
+                        user.email = user.email.toLowerCase();
+                    }
+                    if (typeof user.username !== "undefined" && _.isString(user.username)) {
+                        user.username = user.username.toLowerCase();
 
                     }
 
+                }
+
+
+            },
+
+            classMethods: {
+                authenticateUser: function (body) {
+                    return new Promise(function (resolve, reject) {
+                        users.findOne({
+                            where: {
+                                username: body.username.toLowerCase()
+                            }
+                        }).then(function (useraccount) {
+                            if (!useraccount) {
+                                console.log("Account not found. " + body.username)
+                                return reject();
+
+                            }
+                            if (bcrypt.compareSync(body.password, useraccount.get("pwhash"))) {
+
+                                return resolve(useraccount);
+                            } else {
+                                console.log("Incorrect log in for " + body.username + " " + new Date().toString());
+                                return reject();
+                            }
+
+                        }, function (e) {
+                            return reject(e)
+                        })
+                    })
+                }
+                },
+                findByToken: function (token) {
+                    return new Promise(function (resolve, reject) {
+                        try {
+                            var decodedJWT = jsonwebtoken.verify(token, "#Q(&%#@R#$Qecraesraw5Q#$#r");
+                            var bytes = cryptojs.AES.decrypt(decodedJWT.token, "adsfgabsdyfgabsub");
+                            var tokenData = JSON.parse(bytes.toString(cryptojs.enc.Utf8));
+                            users.findByID(tokenData.id).then(function (users) {
+                                if (users) {
+                                    resolve(user);
+                                } else {
+                                    reject();
+
+                                }
+                            }, function (e) {
+                                console.log(e)
+                                reject();
+
+                            })
+                        } catch (e) {
+                            console.log("Error decoding token.");
+                            reject();
+                        }
+
+
+                    })
 
                 },
-
-                classMethods: {
-                    authenticateUser: function (body) {
-                        return new Promise(function (resolve, reject) {
-                            users.findOne({
-                                where: {
-                                    username: body.username.toLowerCase()
-                                }
-                            }).then(function (useraccount) {
-                                if (!useraccount) {
-                                    console.log("Account not found. " + body.username)
-                                    return reject();
-
-                                }
-                                if (bcrypt.compareSync(body.password, useraccount.get("pwhash"))) {
-
-                                    return resolve(useraccount);
-                                } else {
-                                    console.log("Incorrect log in for " + body.username + " " + new Date().toString());
-                                    return reject();
-                                }
-
-                            }, function (e) {
-                                return reject(e)
-                            })
-                        })
+                instanceMethods: {
+                    pickUserData: function () {
+                        var userdata = this.toJSON();
+                        return _.pick(userdata, "id", "email", "username", "createdAt", "updatedAt");
                     },
-                    findByToken: function (token) {
-                        return new Promise(function (resolve, reject) {
-                                try {
-                                    var decodedJWT = jsonwebtoken.verify(token, "#Q(&%#@R#$Qecraesraw5Q#$#r");
-                                    var bytes = cryptojs.AES.decrypt(decodedJWT.token,"adsfgabsdyfgabsub");
-                                    var tokenData = JSON.parse(bytes.toString(cryptojs.enc.Utf8));
-                                    users.findByID(tokenData.id).then(function(user){
-                                    if(user){
-                                    resolve(user);
-                                    }
-                                    else{
-                                    reject();
-                                    
-                                    }
-                                    },function(e){
-                                    console.log(e)
-                                    reject();
-                                    
-                                    })
-                                } catch (e) {
-                                    console.log("Error decoding token.");
-                                    reject();
-                                }
-
-
+                    generateToken: function (type) {
+                        console.log("GO GO GO");
+                        console.log(typeof type);
+                        if (!_.isString(type)) {
+                            return undefined
+                        }
+                        try {
+                            var stringData = JSON.stringify({
+                                id: this.get("id"),
+                                type: type
                             })
-
-                    },
-                    instanceMethods: {
-                        pickUserData: function () {
-                            var userdata = this.toJSON();
-                            return _.pick(userdata, "id", "email", "username", "createdAt", "updatedAt");
-                        },
-                        generateToken: function (type) {
-                            console.log("GO GO GO");
-                            console.log(typeof type);
-                            if (!_.isString(type)) {
-                                return undefined
-                            }
-                            try {
-                                var stringData = JSON.stringify({
-                                    id: this.get("id"),
-                                    type: type
-                                })
-                                console.log(stringData);
-                                var encryptedData = cryptojs.AES.encrypt(stringData, "adsfgabsdyfgabsub").toString();
-                                var token = jsonwebtoken.sign({
-                                        token: encryptedData},
-                                    "#Q(&%#@R#$Qecraesraw5Q#$#r");
-                                console.log("Token: " + token);
-                                return token;
-                            } catch (e) {
-                                console.log(e);
-                            }
+                            console.log(stringData);
+                            var encryptedData = cryptojs.AES.encrypt(stringData, "adsfgabsdyfgabsub").toString();
+                            var token = jsonwebtoken.sign({
+                                    token: encryptedData
+                                },
+                                "#Q(&%#@R#$Qecraesraw5Q#$#r");
+                            console.log("Token: " + token);
+                            return token;
+                        } catch (e) {
+                            console.log(e);
                         }
                     }
-                }) return users
-        };
+                }
+            });
+    
+    return users
+};

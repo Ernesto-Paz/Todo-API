@@ -2,7 +2,6 @@ module.exports = function (db) {
 
     return {
         requireAuth: function (req, res, next) {
-
             var token = req.get("Authentication");
             db.users.findByToken(token).then(function (user) {
                 req.user = user;
@@ -11,12 +10,6 @@ module.exports = function (db) {
                 res.status(401);
                 res.send();
             });
-
-
         }
-
-
-    }
-
-
+    };
 }

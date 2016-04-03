@@ -5,17 +5,16 @@ var app = express();
 var db = require("./db.js");
 var publicPort = process.env.PORT || 3000;
 var bcrypt = require("bcrypt");
-var middleware = require("./middleware.js");
+var middleware = require("./middleware.js")(db);
 var todoID = 1;
 
 var todos = [
 ];
-
 app.use(bodyParser.json());
 
 app.get("/", function (req, res) {
 
-    res.send("Todo app root directory.");
+res.send("Todo app root directory.");
 
 });
 
