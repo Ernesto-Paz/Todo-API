@@ -77,7 +77,12 @@ app.post("/todos", middleware.requireAuth, function (req, res) {
         description: body.description,
         completed: body.completed
     }).then(function (todo) {
+        req.user.addTodo(todo).then(function(){ 
+        return todo.reload();
+        }).then(function(todo){
         res.send(todo);
+        
+        })
     }).catch(function (e) {
 
             res.status(400);
