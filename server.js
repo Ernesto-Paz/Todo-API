@@ -22,19 +22,19 @@ app.get("/todos", middleware.requireAuth, function (req, res) {
     var todosArray = []
     var queryParams = _.pick(req.query, "completed", "q")
     var where = {
-        where: {}
-    }
+        userId: req.user.get("id")
+        }
     if (queryParams.hasOwnProperty("completed")) {
         if (queryParams.completed === "true") {
             queryParams.completed = true
         } else {
             queryParams.completed = false;
         }
-        where.where.completed = queryParams.completed
+        where.completed = queryParams.completed
     }
     if (queryParams.hasOwnProperty("q") && _.isString(queryParams.q)) {
-        where.where.description = {};
-        where.where.description.$like = "%" + queryParams.q + "%"
+       where.description = {};
+        where.description.$like = "%" + queryParams.q + "%"
     }
     db.todo.findAll(where).then(function (todos) {
         todos.forEach(function (todo) {
@@ -58,7 +58,11 @@ app.get("/todos", middleware.requireAuth, function (req, res) {
 app.get("/todos/:id", middleware.requireAuth, function (req, res) {
 
     var reqId = parseInt(req.params.id, 10);
-    db.todo.findById(reqId).then(function (todo) {
+    var where = {
+    id: reqId,
+    userId:req.user.get("id")
+    }
+    db.todo.findAll(where).then(function (todo) {
         if (!!todo) {
             res.json(todo);
         } else {
