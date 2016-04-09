@@ -62,7 +62,7 @@ module.exports = function (sequelize, DataTypes) {
 
             },
 
-            classMethods: {
+            classMethods:{
                 authenticateUser: function (body) {
                     return new Promise(function (resolve, reject) {
                         users.findOne({
@@ -88,7 +88,7 @@ module.exports = function (sequelize, DataTypes) {
                         })
                     })
                 }
-                },
+                ,
                 findByToken: function (token) {
                     return new Promise(function (resolve, reject) {
                         try {
@@ -115,7 +115,7 @@ module.exports = function (sequelize, DataTypes) {
 
                     })
 
-                },
+                }},
                 instanceMethods: {
                     pickUserData: function () {
                         var userdata = this.toJSON();

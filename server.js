@@ -77,6 +77,7 @@ app.get("/todos/:id", middleware.requireAuth, function (req, res) {
 
 
 //app POST todos creates new todos for users
+
 app.post("/todos", middleware.requireAuth, function (req, res) {
     var body = _.pick(req.body, "description", "completed");
     db.todo.create({
@@ -87,10 +88,8 @@ app.post("/todos", middleware.requireAuth, function (req, res) {
         return todo.reload();
         }).then(function(todo){
         res.send(todo);
-        
         })
     }).catch(function (e) {
-
             res.status(400);
             res.send(e);
         }
@@ -100,6 +99,7 @@ app.post("/todos", middleware.requireAuth, function (req, res) {
 
 // app POST users creates new user accounts
 app.post("/users", function (req, res) {
+    
     var body = _.pick(req.body, "username", "email", "password");
 
     if (_.isString(body.username) && _.isString(body.password) && _.isString(body.email)) {
@@ -114,7 +114,6 @@ app.post("/users", function (req, res) {
                 res.status(400);
                 res.send(e);
             }
-
         );
     } else {
         res.status(400);
@@ -124,15 +123,7 @@ app.post("/users", function (req, res) {
 //logs in registered users
 app.post("/users/login", function (req, res) {
     var body = _.pick(req.body, "username", "password");
-    /*
-    if (_.isString(body.username) && _.isString(body.password)) {
-        res.send(body);
-    } else {
-        res.status(400);
-        res.send("Unable to process request.");
-        return
-    }
-*/
+
     db.users.authenticateUser(body).then(function(userdata){
     res.header("Authentication", userdata.generateToken("Authentication"))
     res.json(userdata.pickUserData());
