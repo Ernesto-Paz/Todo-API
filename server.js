@@ -17,7 +17,7 @@ app.get("/", function (req, res) {
 res.send("Todo app root directory.");
 
 });
-
+//GET all todos belonging to currently logged in user
 app.get("/todos", middleware.requireAuth, function (req, res) {
     var todosArray = []
     var queryParams = _.pick(req.query, "completed", "q")
@@ -54,15 +54,17 @@ app.get("/todos", middleware.requireAuth, function (req, res) {
 
 
 
-//app GET
+//app GET gets todo of specific id belonging to user
 app.get("/todos/:id", middleware.requireAuth, function (req, res) {
 
     var reqId = parseInt(req.params.id, 10);
     var where = {
+    where:{
     id: reqId,
     userId:req.user.get("id")
     }
-    db.todo.findAll(where).then(function (todo) {
+    }
+    db.todo.findOne(where).then(function (todo) {
         if (!!todo) {
             res.json(todo);
         } else {
@@ -74,7 +76,7 @@ app.get("/todos/:id", middleware.requireAuth, function (req, res) {
 
 
 
-//app POST todos
+//app POST todos creates new todos for users
 app.post("/todos", middleware.requireAuth, function (req, res) {
     var body = _.pick(req.body, "description", "completed");
     db.todo.create({
@@ -96,7 +98,7 @@ app.post("/todos", middleware.requireAuth, function (req, res) {
     );
 });
 
-// app POST users
+// app POST users creates new user accounts
 app.post("/users", function (req, res) {
     var body = _.pick(req.body, "username", "email", "password");
 
@@ -119,7 +121,7 @@ app.post("/users", function (req, res) {
         res.send("Invalid data recieved.");
     }
 });
-
+//logs in registered users
 app.post("/users/login", function (req, res) {
     var body = _.pick(req.body, "username", "password");
     /*
@@ -145,10 +147,13 @@ app.post("/users/login", function (req, res) {
 });
 
 
-//app DELETE
+//app DELETE deletes existing todos
 app.delete("/todos/:id", middleware.requireAuth, function (req, res) {
-    var reqid = parseInt(req.params.id, 10);
-    db.todo.findById(reqid).then(function (foundtodo) {
+    var reqId = parseInt(req.params.id, 10);
+    db.todo.findone({where:{
+    id: reqId,
+    userId: req.user.get("id")
+    }}).then(function (foundtodo) {
         console.log(foundtodo);
         if (!foundtodo) {
             res.status = 400;
@@ -165,12 +170,15 @@ app.delete("/todos/:id", middleware.requireAuth, function (req, res) {
 
 
 
-//app PUT
+//app PUT updates existing todos
 app.put("/todos/:id", middleware.requireAuth, function (req, res) {
 
     var body = req.body;
     var reqId = parseInt(req.params.id, 10);
-    db.todo.findById(reqId).then(function (foundtodo) {
+    db.todo.findOne({where:{
+    id:reqId,
+    userId:req.user.get("id")
+    }}).then(function (foundtodo) {
         if (!!foundtodo) {
             if (body.hasOwnProperty("description")) {
                 foundtodo.description = body.description;
