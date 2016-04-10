@@ -95,8 +95,8 @@ module.exports = function (sequelize, DataTypes) {
                             var decodedJWT = jsonwebtoken.verify(token, "#Q(&%#@R#$Qecraesraw5Q#$#r");
                             var bytes = cryptojs.AES.decrypt(decodedJWT.token, "adsfgabsdyfgabsub");
                             var tokenData = JSON.parse(bytes.toString(cryptojs.enc.Utf8));
-                            users.findByID(tokenData.id).then(function (users) {
-                                if (users) {
+                            users.findById(tokenData.id).then(function (user) {
+                                if (user) {
                                     resolve(user);
                                 } else {
                                     reject();
@@ -109,6 +109,7 @@ module.exports = function (sequelize, DataTypes) {
                             })
                         } catch (e) {
                             console.log("Error decoding token.");
+                            console.log(e);
                             reject();
                         }
 
