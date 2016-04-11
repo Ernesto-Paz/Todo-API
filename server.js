@@ -123,17 +123,27 @@ app.post("/users", function (req, res) {
 //logs in registered users
 app.post("/users/login", function (req, res) {
     var body = _.pick(req.body, "username", "password");
-
+    var userInstance
     db.users.authenticateUser(body).then(function(userdata){
-    res.header("Authentication", userdata.generateToken("Authentication"))
-    res.json(userdata.pickUserData());
-    },function(e){
+    var token = userdata.generateToken("Authentication");
+    userInstance = userdata;
+    return db.token.create({
+        
+    token:token
+        
+    })
+    
+    }).then(function(tokenInstance){
+        
+    res.header("Authentication", tokenInstance)
+    res.json(userInstance.pickUserData());
+        
+    }).catch(function(e){
     if(e){
-    res.send(e);
+    console.log(e);
     }
-    else{
     res.status(401).send("Username or Password incorrect.");
-    }
+    })
     })
 });
 
