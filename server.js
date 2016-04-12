@@ -169,6 +169,19 @@ app.delete("/todos/:id", middleware.requireAuth, function (req, res) {
 
 });
 
+//app DELETE log out users by removing tokens from database
+
+app.delete("/users/login", middleware.requireAuth, function(req,res){
+req.token.destroy().then(function(){
+res.status(204)
+res.send();
+},function(){
+res.status(500);
+res.send();
+    
+})
+
+})
 
 
 //app PUT updates existing todos
