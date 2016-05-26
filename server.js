@@ -10,11 +10,17 @@ var todoID = 1;
 
 var todos = [
 ];
+
+//set up views engine and tells express where to find views
+app.set("view engine", "pug");
+app.set("views", "./views");
+
+//set up bodyParser Middleware
 app.use(bodyParser.json());
 
 app.get("/", function (req, res) {
 
-res.send("Todo app root directory.");
+res.render("index.pug");
 
 });
 //GET all todos belonging to currently logged in user
@@ -23,24 +29,24 @@ app.get("/todos", middleware.requireAuth, function (req, res) {
     var queryParams = _.pick(req.query, "completed", "q")
     var where = {
         userId: req.user.get("id")
-        }
+        };
     if (queryParams.hasOwnProperty("completed")) {
         if (queryParams.completed === "true") {
-            queryParams.completed = true
+            queryParams.completed = true;
         } else {
             queryParams.completed = false;
         }
-        where.completed = queryParams.completed
+        where.completed = queryParams.completed;
     }
     if (queryParams.hasOwnProperty("q") && _.isString(queryParams.q)) {
        where.description = {};
-        where.description.$like = "%" + queryParams.q + "%"
+        where.description.$like = "%" + queryParams.q + "%";
     }
     db.todo.findAll(where).then(function (todos) {
         todos.forEach(function (todo) {
-            console.log(todo)
+            console.log(todo);
             todosArray.push(todo);
-        })
+        });
     }).then(function () {
         console.log(where);
         if (todosArray.length == 0) {
@@ -144,8 +150,7 @@ app.post("/users/login", function (req, res) {
     }
     res.status(401).send("Username or Password incorrect.");
     })
-    })
-});
+    });
 
 
 //app DELETE deletes existing todos
@@ -219,4 +224,4 @@ db.sequelize.sync({force:true}).then(function () {
         console.log("Listening on " + publicPort);
 
     });
-})
+});
