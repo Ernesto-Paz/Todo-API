@@ -5,9 +5,11 @@ var app = express();
 var db = require("./db.js");
 var publicPort = process.env.PORT || 3000;
 var bcrypt = require("bcrypt");
+var logger = require("morgan");
 var middleware = require("./middleware.js")(db);
+var todoroutes = require("./routes/todos.js")(db, middleware);
+var userroutes = require("./routes/users.js");
 var todoID = 1;
-
 var todos = [
 ];
 
@@ -15,8 +17,14 @@ var todos = [
 app.set("view engine", "pug");
 app.set("views", "./views");
 
-//set up bodyParser Middleware
+//set up middleware
 app.use(bodyParser.json());
+app.use(logger("dev"));
+
+//set up routes
+//app.use("/todos", todoroutes);
+
+//app.use("/users", userroutes);
 
 app.get("/", function (req, res) {
 
@@ -141,11 +149,12 @@ app.post("/users/login", function (req, res) {
     
     }).then(function(tokenInstance){
         
-    res.header("Authentication", tokenInstance)
+    res.header("Authentication", tokenInstance.token)
     res.json(userInstance.pickUserData());
         
     }).catch(function(e){
     if(e){
+    console.log("Error thrown in app.post /users/login")
     console.log(e);
     }
     res.status(401).send("Username or Password incorrect.");

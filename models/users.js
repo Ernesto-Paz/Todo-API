@@ -103,6 +103,7 @@ module.exports = function (sequelize, DataTypes) {
 
                                 }
                             }, function (e) {
+                                console.log("Error in findByToken.")
                                 console.log(e)
                                 reject();
 

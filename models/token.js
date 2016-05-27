@@ -1,4 +1,4 @@
-var crypto = require("crypto-js");
+var cryptojs = require("crypto-js");
 
 module.exports = function (sequelize,DataTypes){
 
