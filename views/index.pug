@@ -4,12 +4,13 @@ html
         title Much Todo
         meta(name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1, user-scalable=no")
         //load stylesheets
-        link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous")
+        include ./stylesheets.pug
         link(rel="stylesheet" href="/css/customtheme.css")
         link(rel="stylesheet" href="/css/index.css")
         //load scripts
         script(defer, src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256- BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous")
         script(defer, src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous")
+        script(defer, src="/js/index.js")
 
     body
         div(class="container-fluid")
@@ -23,8 +24,23 @@ html
             div(class="row textcentered")
                 div(class="col-md-8 col-md-offset-2")
                     h1 Get It Done
-                    p So much todo, so little time. So Much Todo is an app that provides you with an easy to organize and use online Todo list. So much todo, so little time. So Much Todo is an app that provides you with an easy to organize and use online Todo list.So much todo, so little time. So Much Todo is an app that provides you with an easy to organize and use online Todo list.So much todo, so little time. So Much Todo is an app that provides you with an easy to organize and use online Todo list.So much todo, so little time. So Much Todo is an app that provides you with an easy to organize and use online Todo list.So much todo, so little time. So Much Todo is an app that provides you with an easy to organize and use online Todo list.So much todo, so little time. So Much Todo is an app that provides you with an easy to organize and use online Todo list.
-            div(class = "row")
-            
+                        p(class="text-muted small") Todo can help you get everything done faster.
+            div(class="spacersection")
+            div(class = "row textcentered")
+                div(class="col-md-3 col-sm-4 col-md-offset-0 col-sm-offset-2 bottommarginspacing-x2")
+                    i(class="fa fa-huge fa-plus-circle bottommarginspacing" aria-hidden="true")
+                    h4 Add your todo items.
+                div(class="col-md-3 col-sm-4 bottommarginspacing-x2")
+                    i(class="fa fa-huge fa-check-circle bottommarginspacing" aria-hidden="true")
+                    h4 Check them off your list.
+                div(class="col-md-3 col-sm-4 col-md-offset-0 col-sm-offset-2 bottommarginspacing-x2")
+                    i(class="fa fa-huge fa-times-circle bottommarginspacing" aria-hidden="true")
+                    h4 Delete them off your list.
+                div(class="col-md-3 col-sm-4 bottommarginspacing-x2")
+                    i(class="fa fa-huge fa-arrow-circle-right bottommarginspacing" aria-hidden="true")
+                    h4 Make progress.
+            div(class="spacersection")
+            hr(class="section-hr")
+            div(class="spacersection")
         div(class="container-fluid footer")
             include ./footer.pug

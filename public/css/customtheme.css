@@ -4,3 +4,15 @@ text-align: center;
 .spacersection{
 padding:25px;
 }
+
+.fa-huge{
+font-size: 10em;
+}
+
+.bottommarginspacing{
+margin-bottom:15px;
+}
+
+.bottommarginspacing-x2{
+margin-bottom:30px;
+}
