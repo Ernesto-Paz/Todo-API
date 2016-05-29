@@ -1,7 +1,6 @@
 module.exports = function (db, middleware) {
     var express = require("express");
     var router = express.Router();
-    console.log("Router");
     router.get("/", middleware.requireAuth, function (req, res) {
         var todosArray = []
         var queryParams = _.pick(req.query, "completed", "q")

@@ -12,6 +12,8 @@ var userroutes = require("./routes/users.js")(db, middleware);
 var todoID = 1;
 var todos = [
 ];
+app.use(express.static(__dirname + "/public"));
+app.locals.pretty = true;
 
 //set up views engine and tells express where to find views
 app.set("view engine", "pug");
@@ -23,8 +25,9 @@ app.use(logger("dev"));
 
 //set up routes
 app.use("/todos", todoroutes);
-
 app.use("/users", userroutes);
+//app.use("/", publicroutes);
+//app.use("/todoslist" , privateroutes);
 
 app.get("/", function (req, res) {
 

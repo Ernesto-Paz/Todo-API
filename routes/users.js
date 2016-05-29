@@ -2,7 +2,6 @@
 module.exports = function (db, middleware) {
     var express = require("express");
     var router = express.Router();
-    console.log("Router");
     router.post("/", function (req, res) {
 
         var body = _.pick(req.body, "username", "email", "password");

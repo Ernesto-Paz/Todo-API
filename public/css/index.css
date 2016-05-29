@@ -1,0 +1,40 @@
+html, body{
+height: 100%;
+width: 100%;
+}
+.titleheader{
+background-image:url(/images/bg-splash/frontpagecover2.jpg);
+background-size:cover;
+background-position: center;
+position:relative;
+min-height:100% !important;
+width:auto;
+}
+.titleheadercontent{
+position:absolute;
+top: 15%;
+width:100%;
+text-align:center;
+}
+
+#maintitleheader{
+font-size:95px;
+color:aliceblue;
+}
+
+#subtitleheader{
+margin-top:0px;
+color:aliceblue;
+}
+
+@media screen and (max-width: 786px){
+    #maintitleheader{
+    font-size:48px;
+    }
+    #subtitleheader{
+    font-size: 16px;
+    }
+    .titleheadercontent{
+    top:25%;   
+    }
+}
