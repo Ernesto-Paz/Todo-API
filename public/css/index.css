@@ -6,13 +6,14 @@ width: 100%;
 background-image:url(/images/bg-splash/frontpagecover2.jpg);
 background-size:cover;
 background-position: center;
+background-repeat: no-repeat;
 position:relative;
 min-height:100% !important;
 width:auto;
 }
 .titleheadercontent{
 position:absolute;
-top: 15%;
+top: 25%;
 width:100%;
 text-align:center;
 }
@@ -27,6 +28,11 @@ margin-top:0px;
 color:aliceblue;
 }
 
+.section-hr{
+margin-bottom: 35px;
+
+}
+
 @media screen and (max-width: 786px){
     #maintitleheader{
     font-size:48px;
@@ -35,6 +41,6 @@ color:aliceblue;
     font-size: 16px;
     }
     .titleheadercontent{
-    top:25%;   
+    top:30%;   
     }
 }

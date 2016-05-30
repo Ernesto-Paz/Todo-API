@@ -16,3 +16,8 @@ margin-bottom:15px;
 .bottommarginspacing-x2{
 margin-bottom:30px;
 }
+
+.row.text-center > div {
+    display: inline-block;
+    float: none;
+}

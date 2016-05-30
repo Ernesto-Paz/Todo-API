@@ -3,13 +3,13 @@ html
     head
         title Much Todo
         meta(name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1, user-scalable=no")
-        //load stylesheets
+        //load global stylesheets
         include ./stylesheets.pug
-        link(rel="stylesheet" href="/css/customtheme.css")
+        //load page specific stylesheets
         link(rel="stylesheet" href="/css/index.css")
-        //load scripts
-        script(defer, src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256- BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous")
-        script(defer, src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous")
+        //load global scripts
+        include ./scripts.pug
+        //load page specific scripts
         script(defer, src="/js/index.js")
 
     body
@@ -41,6 +41,28 @@ html
                     h4 Make progress.
             div(class="spacersection")
             hr(class="section-hr")
+            div(class="row")
+                div(class="col-md-5 col-md-offset-1")
+                    blockquote
+                        p Much Todo upped productivity in my workplace by 100%. Who knew such a simple app could do so much? Just having a neat list of things to get done really helps me and my coworkers stay on track!
+                        footer Satisfied User
+                div(class="col-md-5")
+                    blockquote
+                        p Oh yeah well, Much Todo upped productivity in my workplace by 1000%. Thats ten times more than that other guy! Really great stuff this app. Thanks a bunch!
+                        footer A More Satisfied User
+            div(class="row")
+                div(class="col-md-4")
+                    blockquote
+                        p I like it a lot! 10/10 would register again.
+                        footer An Enthusiastic Satisfied User
+                div(class="col-md-4")
+                    blockquote
+                        p Yeah, its a pretty neat app, I guess.
+                        footer A Lazy Satisfied User
+                div(class="col-md-4")
+                    blockquote
+                        p It keeps eveyrthing organized in one spot for me.
+                        footer A Disorganized Satisfied User
             div(class="spacersection")
         div(class="container-fluid footer")
             include ./footer.pug
