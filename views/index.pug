@@ -41,16 +41,17 @@ html
                     h4 Make progress.
             div(class="spacersection")
             hr(class="section-hr")
-            div(class="row")
+            div(class="spacersection")
+            div(class="row headlinequotes")
                 div(class="col-md-5 col-md-offset-1")
                     blockquote
-                        p Much Todo upped productivity in my workplace by 100%. Who knew such a simple app could do so much? Just having a neat list of things to get done really helps me and my coworkers stay on track!
+                        p(class="lead") Much Todo upped productivity in my workplace by 100%. Who knew such a simple app could do so much? Just having a neat list of things to get done really helps me and my coworkers stay on track!
                         footer Satisfied User
                 div(class="col-md-5")
                     blockquote
-                        p Oh yeah well, Much Todo upped productivity in my workplace by 1000%. Thats ten times more than that other guy! Really great stuff this app. Thanks a bunch!
+                        p(class="lead") Oh yeah well, Much Todo upped productivity in my workplace by 1000%. Thats ten times more than that other guy! Really great stuff this app. Thanks a bunch!
                         footer A More Satisfied User
-            div(class="row")
+            div(class="row smallquotes")
                 div(class="col-md-4")
                     blockquote
                         p I like it a lot! 10/10 would register again.
@@ -61,8 +62,38 @@ html
                         footer A Lazy Satisfied User
                 div(class="col-md-4")
                     blockquote
-                        p It keeps eveyrthing organized in one spot for me.
+                        p It keeps everything organized in one spot for me.
                         footer A Disorganized Satisfied User
+            div(class="imagespacer")
+            div(class="well registration")
+                div(class="row")
+                    div(class="col-sm-6 col-md-offset-1 col-sm-offset-0")
+                        h1(class="textcentered") Register Now!
+                                br
+                                small Its free!
+                        div(class="small-spacer")
+                        form(class="form-horizontal")
+                            div(class="form-group")
+                                div(class="col-md-12")
+                                    input(type="text" id="usernameregistration" class="form-control" placeholder="Username")
+                            div(class="form-group")
+                                div(class="col-md-12")
+                                    input(type="text" id="passwordregistration" class="form-control" placeholder="Password")
+                            div(class="form-group")
+                                div(class="col-md-4 col-md-offset-8")
+                                    button(type="submit" class="btn btn-primary btn-block") Sign me up!
+                    div(class="col-md-4 col-sm-5 hidden-xs")
+                        h4
+                            |Register and enjoy these benefits
+                        ul
+                            li  A Todo List you can access from anywhere. 
+                            li  An easy way to keep track of your stuff.
+
+            div(class="contactinformation")
+                div(class="row")
+                    h1 Contact Information
+                div(class="row")
             div(class="spacersection")
+                
         div(class="container-fluid footer")
             include ./footer.pug

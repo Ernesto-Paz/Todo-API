@@ -4,6 +4,9 @@ text-align: center;
 .spacersection{
 padding:25px;
 }
+.small-spacer{
+padding:10px;
+}
 
 .fa-huge{
 font-size: 10em;
@@ -17,7 +20,5 @@ margin-bottom:15px;
 margin-bottom:30px;
 }
 
-.row.text-center > div {
-    display: inline-block;
-    float: none;
+.container-fluid{
 }

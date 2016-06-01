@@ -3,14 +3,28 @@ height: 100%;
 width: 100%;
 }
 .titleheader{
-background-image:url(/images/bg-splash/frontpagecover2.jpg);
+position:relative;
+height:100% !important;
+width:auto;
+overflow:hidden;
+background: url(/images/bg-splash/frontpagecover-small.jpg) center center no-repeat;
+background-size: cover;
+background-attachment: fixed;
+transform:translateZ(0);
+}
+
+.imagespacer{
+background-image:url(/images/bg-splash/workingmidpage-small.jpg);
 background-size:cover;
 background-position: center;
+background-attachment: fixed;
 background-repeat: no-repeat;
 position:relative;
-min-height:100% !important;
+height:400px;
 width:auto;
+transform:translateZ(0);
 }
+
 .titleheadercontent{
 position:absolute;
 top: 25%;
@@ -21,6 +35,7 @@ text-align:center;
 #maintitleheader{
 font-size:95px;
 color:aliceblue;
+text-shadow: 6px 6px 15px rgba(0,0,0,.60);
 }
 
 #subtitleheader{
@@ -30,7 +45,6 @@ color:aliceblue;
 
 .section-hr{
 margin-bottom: 35px;
-
 }
 
 @media screen and (max-width: 786px){
