@@ -20,7 +20,7 @@ app.set("view engine", "pug");
 app.set("views", "./views");
 
 //set up middleware
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:false}));
 app.use(logger("dev"));
 
 //set up routes

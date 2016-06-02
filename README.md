@@ -1,3 +1,3 @@
 # Todo-API
 
-A repo that holds a Todo app API for use with the main app.
+Holds the front end of the Much Todo website as well as the server backend.

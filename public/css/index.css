@@ -1,16 +1,25 @@
-html, body{
-height: 100%;
-width: 100%;
-}
-.titleheader{
+body> .titleheader{
 position:relative;
-height:100% !important;
-width:auto;
+height:100vh;
 overflow:hidden;
 background: url(/images/bg-splash/frontpagecover-small.jpg) center center no-repeat;
 background-size: cover;
 background-attachment: fixed;
 transform:translateZ(0);
+box-shadow:inset 0px -100px 25px -100px black;
+}
+
+#maintitleheader{
+font-size:95px;
+color:aliceblue;
+text-shadow: 6px 6px 15px rgba(0,0,0,.60);
+}
+
+.titleheadercontent{
+position:absolute;
+top: 25%;
+width:100%;
+text-align:center;
 }
 
 .imagespacer{
@@ -23,26 +32,20 @@ position:relative;
 height:400px;
 width:auto;
 transform:translateZ(0);
+box-shadow:inset 0px 90px 35px -100px black, inset 0px -90px 35px -100px black;
 }
 
-.titleheadercontent{
-position:absolute;
-top: 25%;
-width:100%;
-text-align:center;
-}
-
-#maintitleheader{
-font-size:95px;
-color:aliceblue;
-text-shadow: 6px 6px 15px rgba(0,0,0,.60);
+.todomainicons > div > i{
+color:darkgreen;
 }
 
 #subtitleheader{
 margin-top:0px;
 color:aliceblue;
 }
-
+.fa-github{
+width:70px;
+}
 .section-hr{
 margin-bottom: 35px;
 }

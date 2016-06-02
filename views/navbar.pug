@@ -8,11 +8,11 @@ nav(class="navbar navbar-default navbar-fixed-top")
                     a(href="#") About
                 li
                     a(href="#") Register
-            form(class="navbar-form navbar-right" role="login")
+            form(class="navbar-form navbar-right navbarlogin" role="login" method="post" action="/users/login")
                 div(class="form-group")
                     label(for="usernameheaderform")
-                    input(type="text" class="form-control" id="usernameheaderform" placeholder="Username")
+                    input(type="text" class="form-control" id="usernameheaderform" name="username" placeholder="Username")
                 div(class="form-group")
                     label(for="passwordheaderform")
-                    input(type="password" class="form-control" id="passwordheaderform" placeholder="Password")
+                    input(type="password" class="form-control" id="passwordheaderform" name="password" placeholder="Password")
                 button(type="submit" class="btn btn-default") Login

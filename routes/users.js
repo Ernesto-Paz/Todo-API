@@ -2,10 +2,10 @@
 module.exports = function (db, middleware) {
     var express = require("express");
     var router = express.Router();
+    // registers a new user
     router.post("/", function (req, res) {
-
+        console.log(req.body);
         var body = _.pick(req.body, "username", "email", "password");
-
         if (_.isString(body.username) && _.isString(body.password) && _.isString(body.email)) {
             db.users.create({
                 username: body.username,
@@ -14,7 +14,6 @@ module.exports = function (db, middleware) {
             }).then(function (userinfo) {
                 res.send(userinfo.pickUserData());
             }).catch(function (e) {
-
                 res.status(400);
                 res.send(e);
             });
