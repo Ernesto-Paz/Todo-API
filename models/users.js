@@ -76,7 +76,6 @@ module.exports = function (sequelize, DataTypes) {
 
                             }
                             if (bcrypt.compareSync(body.password, useraccount.get("pwhash"))) {
-
                                 return resolve(useraccount);
                             } else {
                                 console.log("Incorrect log in for " + body.username + " " + new Date().toString());
@@ -124,8 +123,6 @@ module.exports = function (sequelize, DataTypes) {
                         return _.pick(userdata, "id", "email", "username", "createdAt", "updatedAt");
                     },
                     generateToken: function (type) {
-                        console.log("GO GO GO");
-                        console.log(typeof type);
                         if (!_.isString(type)) {
                             return undefined
                         }

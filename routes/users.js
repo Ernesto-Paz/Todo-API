@@ -4,7 +4,6 @@ module.exports = function (db, middleware) {
     var router = express.Router();
     // registers a new user
     router.post("/", function (req, res) {
-        console.log(req.body);
         var body = _.pick(req.body, "username", "email", "password");
         if (_.isString(body.username) && _.isString(body.password) && _.isString(body.email)) {
             db.users.create({
@@ -12,7 +11,26 @@ module.exports = function (db, middleware) {
                 email: body.email,
                 password: body.password
             }).then(function (userinfo) {
-                res.send(userinfo.pickUserData());
+                db.users.authenticateUser(body).then(function (userdata) {
+            var token = userdata.generateToken("Authorization");
+            userInstance = userdata;
+            return db.token.create({
+
+                token: token
+
+            })
+
+        }).then(function (tokenInstance) {
+            res.cookie("Authorization", tokenInstance.token);
+            res.redirect("/todolist");
+
+        }).catch(function (e) {
+            if (e) {
+                console.log("Error thrown in app.post /users/login")
+                console.log(e);
+            }
+            res.status(401).send("Username or Password incorrect.");
+        })
             }).catch(function (e) {
                 res.status(400);
                 res.send(e);
@@ -27,7 +45,7 @@ module.exports = function (db, middleware) {
         var body = _.pick(req.body, "username", "password");
         var userInstance
         db.users.authenticateUser(body).then(function (userdata) {
-            var token = userdata.generateToken("Authentication");
+            var token = userdata.generateToken("Authorization");
             userInstance = userdata;
             return db.token.create({
 
@@ -36,9 +54,8 @@ module.exports = function (db, middleware) {
             })
 
         }).then(function (tokenInstance) {
-
-            res.header("Authentication", tokenInstance.token)
-            res.json(userInstance.pickUserData());
+            res.cookie("Authorization", tokenInstance.token);
+            res.redirect("/todolist");
 
         }).catch(function (e) {
             if (e) {

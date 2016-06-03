@@ -3,9 +3,8 @@ module.exports = function (db) {
 
     return {
         requireAuth: function (req, res, next) {
-            var token = req.get("Authentication") || "";
-            console.log(db.users.authenticateUser);
-            
+            var token = req.cookies.Authorization || "";
+            console.log("Token Recieved: " + token);
             db.token.findOne({where:{
             tokenHash:cryptojs.MD5(token).toString()
             }}).then(function(foundToken){
@@ -22,7 +21,7 @@ module.exports = function (db) {
             }, function (e) {
                 res.status(401);
                 console.log(e.stack);
-                res.send();
+                res.send("No Token Found.");
             }).catch(function(){
             res.status(401);
             res.send("No Token Found.");
