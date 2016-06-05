@@ -62,7 +62,7 @@ module.exports = function (db, middleware) {
                 console.log("Error thrown in app.post /users/login")
                 console.log(e);
             }
-            res.status(401).send("Username or Password incorrect.");
+            res.redirect("/public/login");
         })
     });
 

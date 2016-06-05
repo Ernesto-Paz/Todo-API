@@ -29,7 +29,7 @@ app.use(logger("dev"));
 //set up routes
 app.use("/todos", todoroutes);
 app.use("/users", userroutes);
-//app.use("/", publicroutes);
+app.use("/public", publicroutes);
 app.use("/todolist" , privateroutes);
 
 app.get("/", function (req, res) {
