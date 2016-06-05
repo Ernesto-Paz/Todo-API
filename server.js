@@ -11,6 +11,7 @@ var middleware = require("./middleware.js")(db);
 var todoroutes = require("./routes/todos.js")(db, middleware);
 var userroutes = require("./routes/users.js")(db, middleware);
 var privateroutes = require("./routes/private.js")(db, middleware);
+var publicroutes = require("./routes/public.js")(db, middleware);
 var todoID = 1;
 var todos = [
 ];
