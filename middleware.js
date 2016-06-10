@@ -6,26 +6,33 @@ module.exports = function (db) {
             console.log(req.cookies)
             var token = req.cookies.Authorization || "";
             console.log("Token Recieved");
-            db.token.findOne({where:{
-            tokenHash:cryptojs.MD5(token).toString()
-            }}).then(function(foundToken){
-            if(!foundToken){
-            console.log("Token not found.")
-            throw new Error("No token found.");
-            }
-            req.token = foundToken;
-            return db.users.findByToken(token);   
+            db.token.findOne({
+                where: {
+                    tokenHash: cryptojs.MD5(token).toString()
+                }
+            }).then(function (foundToken) {
+                if (!foundToken) {
+                    console.log("Token not found.")
+                    throw new Error("No token found.");
+                }
+                req.token = foundToken;
+                return db.users.findByToken(token);
             }).then(function (user) {
                 console.log("Token found user authenticated.")
                 req.user = user;
+                res.set({
+                    "Cache-Control": "no-cache, no-store, must-revalidate",
+                    "Pragma": "no-cache",
+                    "Expires": "0"
+                })
                 next();
             }, function (e) {
                 res.status(401);
                 console.log(e.stack);
                 res.send("No Token Found.");
-            }).catch(function(){
-            res.status(401);
-            res.send("No Token Found.");
+            }).catch(function () {
+                res.status(401);
+                res.send("No Token Found.");
             })
         }
     };
