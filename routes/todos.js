@@ -24,7 +24,6 @@ module.exports = function (db, middleware) {
                 todosArray.push(todo);
             });
         }).then(function () {
-            console.log(where);
             if (todosArray.length == 0) {
                 res.status(404);
                 res.send("No entries found for given query.");
