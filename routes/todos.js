@@ -55,10 +55,9 @@ module.exports = function (db, middleware) {
 
     router.post("/", middleware.requireAuth, function (req, res) {
         console.log("Posting todo");
-        console.log(body);
-        console.log(req._data);
+        console.log("Before pick: ", req.body);
         var body = _.pick(req.body, "description", "completed");
-        console.log(body);
+        console.log("After pick: ", req.body);
         db.todo.create({
             description: body.description,
             completed: body.completed
