@@ -131,13 +131,11 @@ module.exports = function (sequelize, DataTypes) {
                                 id: this.get("id"),
                                 type: type
                             })
-                            console.log(stringData);
                             var encryptedData = cryptojs.AES.encrypt(stringData, "adsfgabsdyfgabsub").toString();
                             var token = jsonwebtoken.sign({
                                     token: encryptedData
                                 },
                                 "#Q(&%#@R#$Qecraesraw5Q#$#r");
-                            console.log("Token: " + token);
                             return token;
                         } catch (e) {
                             console.log(e);

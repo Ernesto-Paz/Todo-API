@@ -21,10 +21,15 @@ app.locals.pretty = true;
 //set up views engine and tells express where to find views
 app.set("view engine", "pug");
 app.set("views", "./views");
+app.use(function(req,res,next){
 
+    console.log(req.body);
+    next();
+
+})
 //set up middleware
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json({extended:false}));
 app.use(logger("dev"));
 
 //set up routes

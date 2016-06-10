@@ -76,6 +76,7 @@ module.exports = function (db, middleware) {
     router.delete("/login", middleware.requireAuth, function (req, res) {
         req.token.destroy().then(function () {
             res.status(204)
+            res.clearCookie("Authorization");
             res.send();
         }, function () {
             res.status(500);

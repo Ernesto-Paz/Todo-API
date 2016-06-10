@@ -55,7 +55,10 @@ module.exports = function (db, middleware) {
 
     router.post("/", middleware.requireAuth, function (req, res) {
         console.log("Posting todo");
+        console.log(body);
+        console.log(req._data);
         var body = _.pick(req.body, "description", "completed");
+        console.log(body);
         db.todo.create({
             description: body.description,
             completed: body.completed
@@ -67,7 +70,8 @@ module.exports = function (db, middleware) {
             })
         }).catch(function (e) {
                 res.status(400);
-                res.send(e);
+                res.send("Whoops had an error! Contact the admin!");
+                console.log(e);
             }
 
         );

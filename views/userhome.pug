@@ -1,6 +1,7 @@
 head
     include ./stylesheets.pug
     include ./scripts.pug
+    link(rel="stylesheet" href="/css/userhome.css")
     script(defer, src="/js/usermain.js")
 div(class="container-fluid")
     include ./navbarprivate.pug
@@ -11,6 +12,18 @@ body
     //Button to allow user to modify existing todos.
     //Button to allow user to mark todos as done.
     //Display all todos belonging to the user in a neat list.
-    p This is the users page which is private.
+    div(class="container-fluid usercontent")
+        div(class="row")
+            div(class="well clearfix")
+                div(class="col-md-8 col-md-offset-2")
+                    p This is the users page which is private.
+                    form(action="" id="newtodosubmit")
+                        button(type="submit" value="Submit" class="btn btn-default") New Todo
+                        input(type="text" class="form-control" name="description")
+                    button(class="btn btn-default") Remove
+                    button(class="btn btn-default") Edit
+                    input(type="checkbox")
+                    i(class="fa fa-spinner fa-quickpulse fa-5x")
+                    p(id="thetodolist")
 
 include ./footer.pug
