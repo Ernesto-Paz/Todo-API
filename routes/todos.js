@@ -1,6 +1,7 @@
 module.exports = function (db, middleware) {
     var express = require("express");
     var router = express.Router();
+    
     router.get("/", middleware.requireAuth, function (req, res) {
         var todosArray = []
         var queryParams = _.pick(req.query, "completed", "q")
@@ -19,7 +20,7 @@ module.exports = function (db, middleware) {
             where.description = {};
             where.description.$like = "%" + queryParams.q + "%";
         }
-        db.todo.findAll(where).then(function (todos) {
+        db.todo.findAll({where:where}).then(function (todos) {
             todos.forEach(function (todo) {
                 todosArray.push(todo);
             });
