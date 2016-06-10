@@ -1,0 +1,24 @@
+html{
+height:100%;
+}
+body{
+height:100%;
+overflow:hidden;
+}
+.jumbotron{
+height:100%;
+}
+.well{
+border-width:2px;
+}
+
+.warningmsg{
+margin-top:15px;
+padding: 15px;
+border-radius: 10px;
+font-weight: 400 !important;
+border:1px solid #d5acac;
+}
+.centeredtext{
+text-align: center;
+}

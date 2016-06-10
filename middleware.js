@@ -3,8 +3,9 @@ module.exports = function (db) {
 
     return {
         requireAuth: function (req, res, next) {
+            console.log(req.cookies)
             var token = req.cookies.Authorization || "";
-            console.log("Token Recieved: " + token);
+            console.log("Token Recieved");
             db.token.findOne({where:{
             tokenHash:cryptojs.MD5(token).toString()
             }}).then(function(foundToken){

@@ -20,7 +20,7 @@ module.exports = function (sequelize, DataTypes) {
                     allowNull: false,
                     unique: true,
                     validate: {
-                        len: [3, 100]
+                        len: [1, 100]
                     }
                 },
                 salt: {
@@ -34,7 +34,7 @@ module.exports = function (sequelize, DataTypes) {
                     type: DataTypes.VIRTUAL,
                     allowNull: false,
                     validate: {
-                        len: [7, 100]
+                        len: [1, 100]
                     },
                 set: function (pword) {
                     //use async functions for production

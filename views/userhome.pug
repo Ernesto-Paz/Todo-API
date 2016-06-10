@@ -1,5 +1,16 @@
-include ./navbarprivate.pug
+head
+    include ./stylesheets.pug
+    include ./scripts.pug
+    script(defer, src="/js/usermain.js")
+div(class="container-fluid")
+    include ./navbarprivate.pug
 
-p This is the users page which is private.
+body
+    //Button to allow user to add todos.
+    //Button to allow user to remove todos.
+    //Button to allow user to modify existing todos.
+    //Button to allow user to mark todos as done.
+    //Display all todos belonging to the user in a neat list.
+    p This is the users page which is private.
 
 include ./footer.pug

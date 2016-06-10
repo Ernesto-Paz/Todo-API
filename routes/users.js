@@ -11,16 +11,20 @@ module.exports = function (db, middleware) {
                 email: body.email,
                 password: body.password
             }).then(function (userinfo) {
-                db.users.authenticateUser(body).then(function (userdata) {
+                
+            //creates token using user info from freshly registered account.    
+                
+            db.users.authenticateUser(body).then(function (userdata) {
             var token = userdata.generateToken("Authorization");
             userInstance = userdata;
             return db.token.create({
-
                 token: token
-
             })
 
         }).then(function (tokenInstance) {
+                
+            //sends cookie to the user.    
+                
             res.cookie("Authorization", tokenInstance.token);
             res.redirect("/todolist");
 
@@ -33,7 +37,8 @@ module.exports = function (db, middleware) {
         })
             }).catch(function (e) {
                 res.status(400);
-                res.send(e);
+                console.log(e);
+                res.send("Database error, please contact the admin!");
             });
         } else {
             res.status(400);
@@ -60,7 +65,7 @@ module.exports = function (db, middleware) {
         }).catch(function (e) {
             if (e) {
                 console.log("Error thrown in app.post /users/login")
-                console.log(e);
+                console.log(e.stack);
             }
             res.redirect("/public/login");
         })
