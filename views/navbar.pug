@@ -2,7 +2,11 @@ nav(class="navbar navbar-default navbar-fixed-top")
     div(class="container-fluid")
         div(class="navbar-header")
             a(class="navbar-brand" href="/" id="navbarheader") So Much Todo
-        div(class="collapse navbar-collapse" id="homepagenavcollapse")
+            button(type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navcollapse")
+                span(class="icon-bar")
+                span(class="icon-bar")
+                span(class="icon-bar")
+        div(class="collapse navbar-collapse" id="navcollapse")
             ul(class="nav navbar-nav" id="navbaritems")
                 li
                     a(href="#aboutsection") About

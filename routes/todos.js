@@ -78,13 +78,13 @@ module.exports = function (db, middleware) {
 
     router.delete("/:id", middleware.requireAuth, function (req, res) {
         var reqId = parseInt(req.params.id, 10);
-        db.todo.findone({
+        db.todo.findOne({
             where: {
                 id: reqId,
                 userId: req.user.get("id")
             }
         }).then(function (foundtodo) {
-            console.log(foundtodo);
+            console.log("Deleted todo with id " + foundtodo.id);
             if (!foundtodo) {
                 res.status = 400;
                 res.send("Could not find record to delete.");

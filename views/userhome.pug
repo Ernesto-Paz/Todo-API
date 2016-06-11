@@ -14,16 +14,13 @@ body
     //Display all todos belonging to the user in a neat list.
     div(class="container-fluid usercontent")
         div(class="row")
-            div(class="well clearfix")
-                div(class="col-md-8 col-md-offset-2")
-                    p This is the users page which is private.
-                    form(action="" id="newtodosubmit")
-                        button(type="submit" value="Submit" class="btn btn-default") New Todo
-                        input(type="text" class="form-control" name="description")
-                    button(class="btn btn-default") Remove
-                    button(class="btn btn-default") Edit
-                    input(type="checkbox" class="todocheck")
-                    i(class="fa fa-spinner fa-quickpulse fa-5x")
+            div(class="col-md-8 col-md-offset-2")
+                div(class="well clearfix")
+                    form( class="form-horizontal" action="" id="newtodosubmit")
+                        div(class="form-group")
+                            div(class="col-xs-12")
+                                input(type="text" class="form-control newtodoinput" name="description" maxlength="256")
+                                button(type="submit" value="Submit" class="btn btn-default newtodobtn") New Todo
                     ul(id="thetodolist" class="list-group")
 
 include ./footer.pug
