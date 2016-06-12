@@ -8,7 +8,6 @@ margin-top: 50px;
 }
 .newtodobtn{
 margin-top: -3px;
-margin-left:-93px;
 }
 .edittodoinput{
 margin-bottom:10px;
@@ -23,6 +22,7 @@ margin-left:-77.3px;
 .newtodoinput{
 display:inline-block;
 padding-right:93px;
+margin-right:-93px;
 }
 
 .footer{
