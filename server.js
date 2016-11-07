@@ -40,9 +40,8 @@ res.render("index.pug");
 
 });
 
-db.sequelize.sync({}).then(function () {
+db.sequelize.sync({force:true}).then(function () {
     app.listen(publicPort, function () {
-
         console.log("Listening on " + publicPort);
 
     });
